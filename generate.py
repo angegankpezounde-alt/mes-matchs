@@ -32,6 +32,20 @@ COMPETITIONS = [
 WINDOW_DAYS_PAST = 1   # matchs très récents (hier) encore montrés un peu
 WINDOW_DAYS_FUTURE = 10  # matchs à venir affichés jusqu'à 10 jours
 
+# Traduction des codes de phase renvoyés bruts par football-data.org (ex.
+# "LAST_32") en libellés lisibles pour l'affichage. Si un nouveau code
+# apparaît (phase non prévue ici), on retombe sur le code brut plutôt que
+# de planter — voir STAGE_LABELS.get(...) dans render_match_card.
+STAGE_LABELS = {
+    "GROUP_STAGE": "Phase de groupes",
+    "LAST_32": "16es de finale",
+    "LAST_16": "8es de finale",
+    "QUARTER_FINALS": "Quarts de finale",
+    "SEMI_FINALS": "Demi-finales",
+    "THIRD_PLACE": "Match pour la 3e place",
+    "FINAL": "Finale",
+}
+
 
 def fetch_all_matches(api_key):
     """Récupère les matchs de toutes les compétitions suivies, fusionnés."""
@@ -75,9 +89,13 @@ def filter_to_window(matches):
 
 
 def render_match_card(m):
+    home_name = m["home_team"] if m["home_team"] != "?" else "Équipe à déterminer"
+    away_name = m["away_team"] if m["away_team"] != "?" else "Équipe à déterminer"
+
     flag_home = get_flag_url(m["home_team"]) or ""
     flag_away = get_flag_url(m["away_team"]) or ""
     paris_time = format_paris_time(m["_kickoff_dt"])
+    stage_label = STAGE_LABELS.get(m["stage"], m["stage"])
 
     is_live = m["status"] in ("IN_PLAY", "PAUSED")
     is_finished = m["status"] == "FINISHED"
@@ -99,20 +117,38 @@ def render_match_card(m):
     <div class="match-card">
         <div class="match-meta">
             <span class="comp-badge">{m['competition_icon']} {m['competition_name']}</span>
-            <span class="stage">{m['stage']}</span>
+            <span class="stage">{stage_label}</span>
             {status_badge}
         </div>
         <div class="match-row">
-            <div class="team">{home_flag_html}<span>{m['home_team']}</span></div>
+            <div class="team">{home_flag_html}<span>{home_name}</span></div>
             {score_html}
-            <div class="team">{away_flag_html}<span>{m['away_team']}</span></div>
+            <div class="team">{away_flag_html}<span>{away_name}</span></div>
         </div>
         <div class="match-time">{paris_time} (heure de Paris)</div>
     </div>
     """
 
 
+def sort_for_display(matches):
+    """
+    Ordre d'affichage pensé pour la question que se pose le visiteur en
+    arrivant sur le site : "qu'est-ce qui arrive ?" avant "qu'est-ce qui
+    vient de se passer ?".
+
+    - À venir / en direct : ordre chronologique croissant (le plus proche
+      en premier).
+    - Terminés : ordre chronologique décroissant (le plus récent en premier),
+      affichés après, pour ne pas pousser les prochains matchs plus bas.
+    """
+    upcoming = [m for m in matches if m["status"] != "FINISHED"]
+    finished = [m for m in matches if m["status"] == "FINISHED"]
+    finished.sort(key=lambda m: m["_kickoff_dt"], reverse=True)
+    return upcoming + finished
+
+
 def render_page(matches):
+    matches = sort_for_display(matches)
     cards_html = "\n".join(render_match_card(m) for m in matches)
     if not matches:
         cards_html = '<p class="empty">Aucun match dans les prochains jours.</p>'
