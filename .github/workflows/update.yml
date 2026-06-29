@@ -1,0 +1,42 @@
+name: Régénérer le calendrier de matchs
+
+on:
+  schedule:
+    # Toutes les heures, à la minute 5 (légèrement décalé pour éviter la
+    # surcharge des serveurs GitHub au pile de l'heure)
+    - cron: "5 * * * *"
+  workflow_dispatch:
+    # Permet aussi de déclencher manuellement depuis l'onglet "Actions" sur
+    # GitHub, utile pour tester sans attendre la prochaine heure pile.
+
+# Nécessaire pour que l'action puisse pousser le index.html mis à jour
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installer les dépendances
+        run: pip install requests
+
+      - name: Générer la page
+        env:
+          FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
+        run: python generate.py
+
+      - name: Commit et push si changement
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --staged --quiet || git commit -m "Mise à jour automatique du calendrier"
+          git push

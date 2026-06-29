@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Matchs — Calendrier multi-compétitions</title>
+    <meta name="description" content="Tous tes matchs de foot favoris, toutes compétitions confondues, en un coup d'œil et en heure de Paris.">
+    <style>:root {
+    --green-deep: #0b3d2e;
+    --green-pitch: #14532d;
+    --chalk: #f7f5ef;
+    --chalk-dim: #c9d4cb;
+    --amber: #e8a33d;
+    --red-card: #c0392b;
+    --ink: #102a1e;
+    --border: rgba(255, 255, 255, 0.12);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--green-deep);
+    color: var(--chalk);
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    padding: 32px 16px 20px;
+}
+
+header h1 {
+    margin: 0 0 6px;
+    font-size: 1.8rem;
+}
+
+.subtitle {
+    color: var(--chalk-dim);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 16px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.match-card {
+    background: linear-gradient(135deg, var(--green-pitch), var(--green-deep));
+    border: 1px solid rgba(232, 163, 61, 0.18);
+    border-radius: 14px;
+    padding: 16px 18px;
+}
+
+.match-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--chalk-dim);
+    margin-bottom: 10px;
+}
+
+.comp-badge {
+    background: rgba(232, 163, 61, 0.18);
+    color: var(--amber);
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 10px;
+}
+
+.badge {
+    margin-left: auto;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 10px;
+}
+
+.badge-finished {
+    background: rgba(76, 175, 80, 0.2);
+    color: #7fd896;
+}
+
+.badge-live {
+    background: rgba(192, 57, 43, 0.2);
+    color: #ff8a7d;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.match-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.team {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.team:last-child {
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.flag {
+    width: 22px;
+    height: 16px;
+    object-fit: cover;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.score {
+    background: var(--ink);
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.score-pending {
+    background: transparent;
+    color: var(--chalk-dim);
+    font-weight: 400;
+}
+
+.score-live {
+    background: rgba(192, 57, 43, 0.2);
+    color: #ff8a7d;
+}
+
+.match-time {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.12);
+    font-size: 0.8rem;
+    color: var(--chalk-dim);
+    text-align: center;
+}
+
+.empty {
+    text-align: center;
+    color: var(--chalk-dim);
+    padding: 40px 0;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.75rem;
+    color: var(--chalk-dim);
+}
+</style>
+</head>
+<body>
+    <header>
+        <h1>⚽ Mes Matchs</h1>
+        <p class="subtitle">Toutes tes compétitions, une seule vue, heure de Paris.</p>
+    </header>
+    <main>
+        
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            <span class="badge badge-finished">Terminé</span>
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/za.png" class="flag" alt=""><span>South Africa</span></div>
+            <span class="score">0 - 1</span>
+            <div class="team"><img src="https://flagcdn.com/w80/ca.png" class="flag" alt=""><span>Canada</span></div>
+        </div>
+        <div class="match-time">28/06 21:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/br.png" class="flag" alt=""><span>Brazil</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><img src="https://flagcdn.com/w80/jp.png" class="flag" alt=""><span>Japan</span></div>
+        </div>
+        <div class="match-time">29/06 19:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/de.png" class="flag" alt=""><span>Germany</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><img src="https://flagcdn.com/w80/py.png" class="flag" alt=""><span>Paraguay</span></div>
+        </div>
+        <div class="match-time">29/06 22:30 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/nl.png" class="flag" alt=""><span>Netherlands</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><img src="https://flagcdn.com/w80/ma.png" class="flag" alt=""><span>Morocco</span></div>
+        </div>
+        <div class="match-time">30/06 03:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/ci.png" class="flag" alt=""><span>Ivory Coast</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><img src="https://flagcdn.com/w80/no.png" class="flag" alt=""><span>Norway</span></div>
+        </div>
+        <div class="match-time">30/06 19:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/fr.png" class="flag" alt=""><span>France</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><img src="https://flagcdn.com/w80/se.png" class="flag" alt=""><span>Sweden</span></div>
+        </div>
+        <div class="match-time">30/06 23:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/mx.png" class="flag" alt=""><span>Mexico</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><img src="https://flagcdn.com/w80/ec.png" class="flag" alt=""><span>Ecuador</span></div>
+        </div>
+        <div class="match-time">01/07 03:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/gb-eng.png" class="flag" alt=""><span>England</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><img src="https://flagcdn.com/w80/cd.png" class="flag" alt=""><span>Congo DR</span></div>
+        </div>
+        <div class="match-time">01/07 18:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/be.png" class="flag" alt=""><span>Belgium</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><img src="https://flagcdn.com/w80/sn.png" class="flag" alt=""><span>Senegal</span></div>
+        </div>
+        <div class="match-time">01/07 22:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/us.png" class="flag" alt=""><span>United States</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><img src="https://flagcdn.com/w80/ba.png" class="flag" alt=""><span>Bosnia-Herzegovina</span></div>
+        </div>
+        <div class="match-time">02/07 02:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/es.png" class="flag" alt=""><span>Spain</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><img src="https://flagcdn.com/w80/at.png" class="flag" alt=""><span>Austria</span></div>
+        </div>
+        <div class="match-time">02/07 21:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/pt.png" class="flag" alt=""><span>Portugal</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><img src="https://flagcdn.com/w80/hr.png" class="flag" alt=""><span>Croatia</span></div>
+        </div>
+        <div class="match-time">03/07 01:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/ch.png" class="flag" alt=""><span>Switzerland</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><img src="https://flagcdn.com/w80/dz.png" class="flag" alt=""><span>Algeria</span></div>
+        </div>
+        <div class="match-time">03/07 05:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/au.png" class="flag" alt=""><span>Australia</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><img src="https://flagcdn.com/w80/eg.png" class="flag" alt=""><span>Egypt</span></div>
+        </div>
+        <div class="match-time">03/07 20:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/ar.png" class="flag" alt=""><span>Argentina</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><span>Cape Verde Islands</span></div>
+        </div>
+        <div class="match-time">04/07 00:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_32</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/co.png" class="flag" alt=""><span>Colombia</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><img src="https://flagcdn.com/w80/gh.png" class="flag" alt=""><span>Ghana</span></div>
+        </div>
+        <div class="match-time">04/07 03:30 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_16</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><img src="https://flagcdn.com/w80/ca.png" class="flag" alt=""><span>Canada</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><span>?</span></div>
+        </div>
+        <div class="match-time">04/07 19:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_16</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><span>?</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><span>?</span></div>
+        </div>
+        <div class="match-time">04/07 23:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_16</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><span>?</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><span>?</span></div>
+        </div>
+        <div class="match-time">05/07 22:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_16</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><span>?</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><span>?</span></div>
+        </div>
+        <div class="match-time">06/07 02:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_16</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><span>?</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><span>?</span></div>
+        </div>
+        <div class="match-time">06/07 21:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_16</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><span>?</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><span>?</span></div>
+        </div>
+        <div class="match-time">07/07 02:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_16</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><span>?</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><span>?</span></div>
+        </div>
+        <div class="match-time">07/07 18:00 (heure de Paris)</div>
+    </div>
+    
+
+    <div class="match-card">
+        <div class="match-meta">
+            <span class="comp-badge">🌍 Coupe du Monde 2026</span>
+            <span class="stage">LAST_16</span>
+            
+        </div>
+        <div class="match-row">
+            <div class="team"><span>?</span></div>
+            <span class="score score-pending">vs</span>
+            <div class="team"><span>?</span></div>
+        </div>
+        <div class="match-time">07/07 22:00 (heure de Paris)</div>
+    </div>
+    
+    </main>
+    <footer>
+        <p>Dernière mise à jour : 29/06/2026 à 15:53 UTC</p>
+    </footer>
+</body>
+</html>
