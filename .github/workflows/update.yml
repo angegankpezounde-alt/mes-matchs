@@ -2,9 +2,11 @@ name: Régénérer le calendrier de matchs
 
 on:
   schedule:
-    # Toutes les heures, à la minute 5 (légèrement décalé pour éviter la
-    # surcharge des serveurs GitHub au pile de l'heure)
-    - cron: "5 * * * *"
+    # Toutes les 5 minutes (minimum technique autorisé par GitHub Actions
+    # pour les cron schedules) — pour que les scores et statuts en direct
+    # apparaissent sur le site avec un délai maximal de 5 minutes plutôt
+    # qu'une heure.
+    - cron: "*/5 * * * *"
   workflow_dispatch:
     # Permet aussi de déclencher manuellement depuis l'onglet "Actions" sur
     # GitHub, utile pour tester sans attendre la prochaine heure pile.
